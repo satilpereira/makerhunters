@@ -1,0 +1,32 @@
+services:
+  app:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    ports:
+      - "3000:3000"
+    networks:
+      - makerhunters_network
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+          cpus: "0.5"
+
+  database:
+    image: postgres:18
+    networks:
+      - makerhunters_network
+    environment:
+      POSTGRES_USER: postgres_user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: postgres_db
+    volumes:
+      - db_data:/var/lib/postgresql
+
+networks:
+  makerhunters_network:
+    driver: bridge
+
+volumes:
+  db_data:
